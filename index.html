@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Problems & Solutions - مسائل فيزيائية محلولة</title>
+    <meta name="description" content="مسائل فيزيائية محلولة تفاعلية - متجهات، قوى، قياسات، موجات، صوت">
+    <meta name="author" content="Mr. Mohammed Hesham">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        body.en-mode { font-family: 'Inter', sans-serif; }
+        .correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+        .incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+        .timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 50% { opacity: 0.7; } }
+        @media print { .no-print { display: none !important; } }
+        .success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+        .grade-excellent { background: #dcfce7; color: #166534; }
+        .grade-good { background: #fef3c7; color: #92400e; }
+        .grade-pass { background: #dbeafe; color: #1e40af; }
+        .grade-fail { background: #fee2e2; color: #991b1b; }
+        .lang-switch {
+            position: fixed; top: 16px; left: 16px; z-index: 100;
+            background: white; padding: 6px; border-radius: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px;
+            border: 2px solid #0d9488;
+        }
+        [dir="ltr"] .lang-switch { left: auto; right: 16px; }
+        .lang-btn {
+            padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: all 0.3s; border: none; font-size: 0.875rem;
+            background: transparent; color: #6b7280;
+        }
+        .lang-btn.active { background: #0d9488; color: white; box-shadow: 0 2px 6px rgba(13,148,136,0.4); }
+        .lang-btn:hover:not(.active) { background: #f0fdfa; color: #0d9488; }
+        .shuffle-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #0d9488, #0f766e);
+            color: white; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.75rem; font-weight: bold; margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        .math-display {
+            display: inline-block; direction: ltr;
+            font-family: 'Times New Roman', 'Cambria Math', serif;
+            font-size: 1.15em; font-style: italic;
+            padding: 2px 8px; background: #f0fdfa;
+            border-radius: 6px; margin: 2px;
+            color: #0f766e; font-weight: 600; letter-spacing: 0.5px;
+        }
+        .save-indicator {
+            position: fixed; bottom: 20px; left: 20px; z-index: 200;
+            background: #10b981; color: white; padding: 8px 16px;
+            border-radius: 20px; font-size: 0.8rem; font-weight: bold;
+            opacity: 0; transition: opacity 0.3s; pointer-events: none;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.4);
+        }
+        .save-indicator.show { opacity: 1; }
+        .formula-box {
+            background: #f0fdfa; border: 2px solid #14b8a6;
+            border-radius: 8px; padding: 12px; margin: 10px 0;
+            font-family: 'Times New Roman', serif;
+            direction: ltr; text-align: center;
+        }
+        .solution-box {
+            background: #f0f9ff;
+            border-left: 4px solid #0284c7;
+            padding: 12px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-family: 'Times New Roman', serif;
+            direction: ltr;
+            text-align: left;
+        }
+        [dir="rtl"] .solution-box {
+            border-left: none;
+            border-right: 4px solid #0284c7;
+            text-align: right;
+        }
+        .topic-card {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .topic-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .topic-card.active {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-teal-50 to-emerald-50 text-gray-800 p-4 md:p-8 min-h-screen">
+
+    <div class="lang-switch no-print">
+        <button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+        <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+    </div>
+
+    <div id="saveIndicator" class="save-indicator">💾 <span data-ar="تم الحفظ" data-en="Saved">تم الحفظ</span></div>
+
+    <header class="max-w-6xl mx-auto bg-white p-6 rounded-2xl shadow-lg mb-8 border-4 border-teal-400">
+        <div class="text-center">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2" data-ar="⚛️ مسائل فيزيائية محلولة" data-en="⚛️ Physics Problems & Solutions">⚛️ مسائل فيزيائية محلولة</h1>
+            <h2 class="text-lg text-teal-600 font-semibold" data-ar="متجهات، قوى، قياسات، موجات، صوت" data-en="Vectors, Forces, Measurements, Waves, Sound">متجهات، قوى، قياسات، موجات، صوت</h2>
+            <p class="text-sm text-gray-600 mt-2" data-ar="اختر موضوعاً لعرض المسائل المحلولة" data-en="Select a topic to view solved problems">اختر موضوعاً لعرض المسائل المحلولة</p>
+        </div>
+        <div class="mt-4 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+            <span><span data-ar="😊 الاسم:" data-en="😊 Name:">😊 الاسم:</span> <input type="text" id="studentName" class="border-b-2 border-teal-300 bg-transparent w-32 text-center" placeholder="اكتب اسمك"></span>
+            <span><span data-ar=" الشعبة:" data-en="🏫 Class:">🏫 الشعبة:</span> <input type="text" id="studentClass" class="border-b-2 border-teal-300 bg-transparent w-28 text-center" placeholder="الشعبة"></span>
+            <span><span data-ar=" التاريخ:" data-en="📅 Date:">📅 التاريخ:</span> <input type="text" id="examDate" class="border-b-2 border-teal-300 bg-transparent w-28 text-center"></span>
+        </div>
+    </header>
+
+    <!-- Topics Navigation -->
+    <div class="max-w-6xl mx-auto mb-8 no-print">
+        <h3 class="text-xl font-bold text-teal-700 mb-4 text-center" data-ar="📚 اختر الموضوع" data-en="📚 Choose Topic">📚 اختر الموضوع</h3>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-3" id="topics-grid">
+            <div class="topic-card bg-white p-4 rounded-xl shadow border-2 border-teal-100 text-center" onclick="showTopic('vectors')">
+                <div class="text-3xl mb-2">📐</div>
+                <div class="font-bold text-sm text-gray-800" data-ar="المتجهات" data-en="Vectors">المتجهات</div>
+            </div>
+            <div class="topic-card bg-white p-4 rounded-xl shadow border-2 border-teal-100 text-center" onclick="showTopic('forces')">
+                <div class="text-3xl mb-2">️</div>
+                <div class="font-bold text-sm text-gray-800" data-ar="القوى" data-en="Forces">القوى</div>
+            </div>
+            <div class="topic-card bg-white p-4 rounded-xl shadow border-2 border-teal-100 text-center" onclick="showTopic('measurements')">
+                <div class="text-3xl mb-2">📏</div>
+                <div class="font-bold text-sm text-gray-800" data-ar="القياسات" data-en="Measurements">القياسات</div>
+            </div>
+            <div class="topic-card bg-white p-4 rounded-xl shadow border-2 border-teal-100 text-center" onclick="showTopic('waves')">
+                <div class="text-3xl mb-2">🌊</div>
+                <div class="font-bold text-sm text-gray-800" data-ar="الموجات" data-en="Waves">الموجات</div>
+            </div>
+            <div class="topic-card bg-white p-4 rounded-xl shadow border-2 border-teal-100 text-center" onclick="showTopic('sound')">
+                <div class="text-3xl mb-2"></div>
+                <div class="font-bold text-sm text-gray-800" data-ar="الصوت" data-en="Sound">الصوت</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Content Area -->
+    <main class="max-w-6xl mx-auto space-y-6" id="content-area">
+        <div class="bg-white p-8 rounded-2xl shadow-lg border-2 border-teal-100 text-center">
+            <div class="text-6xl mb-4">👆</div>
+            <h3 class="text-xl font-bold text-gray-700" data-ar="اختر موضوعاً من الأعلى لعرض المسائل" data-en="Select a topic above to view problems">اختر موضوعاً من الأعلى لعرض المسائل</h3>
+        </div>
+    </main>
+
+    <footer class="max-w-6xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+        © <span data-ar="مسائل فيزيائية محلولة" data-en="Physics Problems & Solutions">مسائل فيزيائية محلولة</span> | Mr. Mohammed Hesham ⚛️
+    </footer>
+
+<script>
+// ==================== EmailJS Settings ====================
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+emailjs.init(PUBLIC_KEY);
+
+let currentLang = 'ar';
+let currentTopic = null;
+
+// ==================== Physics Problems Data ====================
+const physicsProblems = {
+    vectors: {
+        title: { ar: '📐 المتجهات - Vectors', en: '📐 Vectors' },
+        problems: [
+            {
+                id: 'P2A',
+                title: { ar: 'Practice 2A: إيجاد مركبات المتجهات', en: 'Practice 2A: Finding Vector Components' },
+                problem: { 
+                    ar: 'أوجد المركبتين (Fx و Fy) للمتجه: <span class="math-display">25 N</span> بزاوية <span class="math-display">30°</span>',
+                    en: 'Find the components (Fx and Fy) of the vector: <span class="math-display">25 N</span> at angle <span class="math-display">30°</span>'
+                },
+                solution: {
+                    ar: 'Fx = 25 × cos(30°) = 21.65 N<br>Fy = 25 × sin(30°) = 12.5 N',
+                    en: 'Fx = 25 × cos(30°) = 21.65 N<br>Fy = 25 × sin(30°) = 12.5 N'
+                }
+            },
+            {
+                id: 'P2B',
+                title: { ar: 'Practice 2B: حساب المقدار والاتجاه', en: 'Practice 2B: Magnitude and Direction' },
+                problem: { 
+                    ar: 'متجه a له مركبتان: <span class="math-display">ax = -3.0 m/s²</span> و <span class="math-display">ay = +4.0 m/s²</span>. احسب المقدار والاتجاه.',
+                    en: 'Vector a has components: <span class="math-display">ax = -3.0 m/s²</span> and <span class="math-display">ay = +4.0 m/s²</span>. Find magnitude and direction.'
+                },
+                solution: {
+                    ar: '(a) المقدار = √(3² + 4²) = <span class="math-display">5 m/s²</span><br>(b) tan θ = 4/3 → θ = <span class="math-display">53.1°</span> فوق المحور -x',
+                    en: '(a) Magnitude = √(3² + 4²) = <span class="math-display">5 m/s²</span><br>(b) tan θ = 4/3 → θ = <span class="math-display">53.1°</span> above -x-axis'
+                }
+            },
+            {
+                id: 'P2C',
+                title: { ar: 'Practice 2C: متجه آخر', en: 'Practice 2C: Another Vector' },
+                problem: { 
+                    ar: 'متجه a له مركبتان: <span class="math-display">ax = 6.0 m/s²</span> و <span class="math-display">ay = -8.0 m/s²</span>. احسب المقدار والاتجاه.',
+                    en: 'Vector a has components: <span class="math-display">ax = 6.0 m/s²</span> and <span class="math-display">ay = -8.0 m/s²</span>. Find magnitude and direction.'
+                },
+                solution: {
+                    ar: '(a) المقدار = <span class="math-display">10 m/s²</span><br>(b) <span class="math-display">53.1°</span> تحت المحور +x',
+                    en: '(a) <span class="math-display">10 m/s²</span><br>(b) <span class="math-display">53.1°</span> below +x-axis'
+                }
+            },
+            {
+                id: 'P3A',
+                title: { ar: 'Practice 3A: جمع المتجهات', en: 'Practice 3A: Vector Addition' },
+                problem: { 
+                    ar: 'أوجد مجموع المتجهين: <span class="math-display">a⃗ = 4x̂ - 3ŷ</span> و <span class="math-display">b⃗ = -13x̂ + 7ŷ</span>',
+                    en: 'Find the sum: <span class="math-display">a⃗ = 4x̂ - 3ŷ</span> and <span class="math-display">b = -13x̂ + 7</span>'
+                },
+                solution: {
+                    ar: '(a) a⃗ + b⃗ = <span class="math-display">-9x̂ + 4ŷ</span><br>(b) المقدار = √97، θ = <span class="math-display">23.9°</span> فوق المحور -x',
+                    en: '(a) a⃗ + b⃗ = <span class="math-display">-9x̂ + 4ŷ</span><br>(b) Magnitude = √97, θ = <span class="math-display">23.9°</span> above -x-axis'
+                }
+            }
+        ]
+    },
+    forces: {
+        title: { ar: '⚖️ القوى وقوانين نيوتن - Forces & Newton\'s Laws', en: '⚖️ Forces & Newton\'s Laws' },
+        problems: [
+            {
+                id: 'P4A',
+                title: { ar: 'Practice 4A: قوانين نيوتن', en: 'Practice 4A: Newton\'s Laws' },
+                problem: { 
+                    ar: 'طابق كل عبارة مع القانون الصحيح (الأول، الثاني، الثالث لنيوتن)',
+                    en: 'Match each statement with the correct law (Newton\'s First, Second, or Third Law)'
+                },
+                solution: {
+                    ar: '• القانون الثالث: كل فعل له رد فعل مساوٍ ومعاكس<br>• القانون الأول: الجسم الساكن يبقى ساكناً والمتحرك يبقى متحركاً ما لم تؤثر عليه قوة<br>• القانون الثاني: ΣF = ma',
+                    en: '• Third Law: Equal and opposite reaction<br>• First Law: Object at rest stays at rest unless acted upon by net force<br>• Second Law: ΣF = ma'
+                }
+            },
+            {
+                id: 'P5A',
+                title: { ar: 'Practice 5A: القوة العمودية', en: 'Practice 5A: Normal Force' },
+                problem: { 
+                    ar: 'كتاب كتلته <span class="math-display">1.7 kg</span> موضوع على الأرض. احسب القوة العمودية.',
+                    en: 'A book of mass <span class="math-display">1.7 kg</span> is lying on the floor. Calculate the normal force.'
+                },
+                solution: {
+                    ar: 'N = W = mg = 1.7 × 9.81 = <span class="math-display">16.7 N</span>',
+                    en: 'N = W = mg = 1.7 × 9.81 = <span class="math-display">16.7 N</span>'
+                }
+            },
+            {
+                id: 'P5B',
+                title: { ar: 'Practice 5B: الاحتكاك السكوني', en: 'Practice 5B: Static Friction' },
+                problem: { 
+                    ar: 'صندوق كتلته <span class="math-display">45 kg</span> على أرضية. معامل الاحتكاك السكوني <span class="math-display">μs = 0.76</span>. ما القوة اللازمة لبدء تحريكه؟',
+                    en: 'A <span class="math-display">45 kg</span> box on a floor with <span class="math-display">μs = 0.76</span>. What force is needed to start moving it?'
+                },
+                solution: {
+                    ar: 'N = mg = 45 × 9.81 = 441.45 N<br>Fs = μs × N = 0.76 × 441.45 = <span class="math-display">335.5 N</span>',
+                    en: 'N = mg = 45 × 9.81 = 441.45 N<br>Fs = μs × N = 0.76 × 441.45 = <span class="math-display">335.5 N</span>'
+                }
+            },
+            {
+                id: 'P5C',
+                title: { ar: 'Practice 5C: الجسم على مستوى مائل', en: 'Practice 5C: Object on Inclined Plane' },
+                problem: { 
+                    ar: 'صندوق كتلته <span class="math-display">200 kg</span> على منحدر عديم الاحتكاك بزاوية <span class="math-display">15°</span>. ما القوة اللازمة لدفعه بسرعة ثابتة؟',
+                    en: 'A <span class="math-display">200 kg</span> box on a frictionless ramp at <span class="math-display">15°</span>. What force is needed to push it at constant speed?'
+                },
+                solution: {
+                    ar: 'F = mg sin θ = 200 × 9.81 × sin(15°) = <span class="math-display">507.8 N</span>',
+                    en: 'F = mg sin θ = 200 × 9.81 × sin(15°) = <span class="math-display">507.8 N</span>'
+                }
+            }
+        ]
+    },
+    measurements: {
+        title: { ar: '📏 القياسات وعدم اليقين - Measurements & Uncertainty', en: '📏 Measurements & Uncertainty' },
+        problems: [
+            {
+                id: 'M1',
+                title: { ar: 'مثال 1: قراءة المسطرة', en: 'Example 1: Ruler Reading' },
+                problem: { 
+                    ar: 'اكتب القياس مع عدم اليقين: <span class="math-display">21.5 cm</span> (أصغر تقسيم = 1 mm)',
+                    en: 'Write the measurement with uncertainty: <span class="math-display">21.5 cm</span> (smallest division = 1 mm)'
+                },
+                solution: {
+                    ar: 'عدم اليقين = 0.1 ÷ 2 = 0.05 cm<br>النتيجة: <span class="math-display">(21.5 ± 0.05) cm</span><br>القيمة الحقيقية بين 21.45 و 21.55 cm',
+                    en: 'Uncertainty = 0.1 ÷ 2 = 0.05 cm<br>Result: <span class="math-display">(21.5 ± 0.05) cm</span><br>True value between 21.45 and 21.55 cm'
+                }
+            },
+            {
+                id: 'M2',
+                title: { ar: 'مثال 2: جهاز إلكتروني', en: 'Example 2: Electronic Device' },
+                problem: { 
+                    ar: 'ميزان إلكتروني يقرأ <span class="math-display">62.000 g</span>. ما عدم اليقين؟',
+                    en: 'An electronic balance reads <span class="math-display">62.000 g</span>. What is the uncertainty?'
+                },
+                solution: {
+                    ar: 'للأجهزة الإلكترونية: عدم اليقين = 1 في آخر منزلة عشرية<br>عدم اليقين = <span class="math-display">±0.0005 g</span><br>القيمة الحقيقية بين 61.9995 و 62.0005 g',
+                    en: 'For electronic devices: uncertainty = 1 in last decimal place<br>Uncertainty = <span class="math-display">±0.0005 g</span><br>True value between 61.9995 and 62.0005 g'
+                }
+            },
+            {
+                id: 'M3',
+                title: { ar: 'مثال 3: الترمومتر الإلكتروني', en: 'Example 3: Electronic Thermometer' },
+                problem: { 
+                    ar: 'ترمومتر يقرأ <span class="math-display">38.65 °C</span>. ما عدم اليقين؟',
+                    en: 'A thermometer reads <span class="math-display">38.65 °C</span>. What is the uncertainty?'
+                },
+                solution: {
+                    ar: 'عدم اليقين = 0.01  2 = <span class="math-display">±0.005 °C</span><br>النتيجة: <span class="math-display">(38.65 ± 0.005) °C</span>',
+                    en: 'Uncertainty = 0.01 ÷ 2 = <span class="math-display">±0.005 °C</span><br>Result: <span class="math-display">(38.65 ± 0.005) °C</span>'
+                }
+            },
+            {
+                id: 'M4',
+                title: { ar: 'مثال 4: الدقة مقابل الصحة', en: 'Example 4: Precision vs Accuracy' },
+                problem: { 
+                    ar: 'ثلاثة طلاب قاسوا طول نابض: الطالب 1: (14.6 ± 0.2) cm، الطالب 2: (14.8 ± 0.3) cm، الطالب 3: (14.0 ± 0.1) cm. من يتفق مع من؟',
+                    en: 'Three students measured a spring: Student 1: (14.6 ± 0.2) cm, Student 2: (14.8 ± 0.3) cm, Student 3: (14.0 ± 0.1) cm. Who agrees?'
+                },
+                solution: {
+                    ar: 'مدى الطالب 1: 14.4-14.8 cm<br>مدى الطالب 2: 14.5-15.1 cm<br>يتداخلان بين 14.5 و 14.8 cm → <strong>الطالبان 1 و 2 متفقان</strong><br>الطالب 3 لا يتفق معهما',
+                    en: 'Student 1 range: 14.4-14.8 cm<br>Student 2 range: 14.5-15.1 cm<br>They overlap between 14.5 and 14.8 cm → <strong>Students 1 and 2 agree</strong><br>Student 3 does not agree'
+                }
+            }
+        ]
+    },
+    waves: {
+        title: { ar: ' خصائص الموجات - Wave Properties', en: '🌊 Wave Properties' },
+        problems: [
+            {
+                id: 'W1',
+                title: { ar: 'مثال: موجة في قضيب حديد', en: 'Example: Wave in Iron Rail' },
+                problem: { 
+                    ar: 'موجة ترددها <span class="math-display">855 Hz</span> تنتقل في قضيب حديد بسرعة <span class="math-display">5130 m/s</span>. احسب الطول الموجي والزمن الدوري.',
+                    en: 'An <span class="math-display">855 Hz</span> wave moves through iron at <span class="math-display">5130 m/s</span>. Find wavelength and period.'
+                },
+                solution: {
+                    ar: 'λ = v/f = 5130/855 = <span class="math-display">6.00 m</span><br>T = 1/f = 1/855 = <span class="math-display">0.00117 s</span>',
+                    en: 'λ = v/f = 5130/855 = <span class="math-display">6.00 m</span><br>T = 1/f = 1/855 = <span class="math-display">0.00117 s</span>'
+                }
+            },
+            {
+                id: 'W2',
+                title: { ar: 'مثال: أنواع الموجات', en: 'Example: Types of Waves' },
+                problem: { 
+                    ar: 'ما الفرق بين الموجة المستعرضة والطولية؟',
+                    en: 'What is the difference between transverse and longitudinal waves?'
+                },
+                solution: {
+                    ar: '<strong>الموجة المستعرضة:</strong> الاهتزاز عمودي على اتجاه الانتشار (مثل الضوء)، لها قمم وقيعان<br><strong>الموجة الطولية:</strong> الاهتزاز موازٍ لاتجاه الانتشار (مثل الصوت)، لها تضاغطات وتخلخلات',
+                    en: '<strong>Transverse wave:</strong> Vibration perpendicular to direction (e.g., light), has crests and troughs<br><strong>Longitudinal wave:</strong> Vibration parallel to direction (e.g., sound), has compressions and rarefactions'
+                }
+            },
+            {
+                id: 'W3',
+                title: { ar: 'مثال: العلاقة بين الطاقة والسعة', en: 'Example: Energy and Amplitude' },
+                problem: { 
+                    ar: 'كيف تتغير الطاقة المنقولة عند مضاعفة سعة الموجة؟',
+                    en: 'How does transferred energy change when wave amplitude is doubled?'
+                },
+                solution: {
+                    ar: 'الطاقة تتناسب مع مربع السعة (E ∝ A²)<br>عند مضاعفة السعة: الطاقة تزيد <span class="math-display">4 أضعاف</span>',
+                    en: 'Energy is proportional to amplitude squared (E ∝ A²)<br>When amplitude doubles: energy increases <span class="math-display">4 times</span>'
+                }
+            }
+        ]
+    },
+    sound: {
+        title: { ar: ' الصوت - Sound', en: ' Sound' },
+        problems: [
+            {
+                id: 'S1',
+                title: { ar: 'مثال: صدى من جرف', en: 'Example: Echo from Cliff' },
+                problem: { 
+                    ar: 'بوق سفينة يُسمع صداه من جرف بعد <span class="math-display">4.0 s</span>. إذا كانت سرعة الصوت <span class="math-display">340 m/s</span>، فما بعد الجرف؟',
+                    en: 'A ship\'s horn echo is heard from a cliff after <span class="math-display">4.0 s</span>. If speed of sound is <span class="math-display">340 m/s</span>, how far is the cliff?'
+                },
+                solution: {
+                    ar: 'المسافة الكلية = v × t = 340 × 4 = 1360 m<br>بعد الجرف = 1360 ÷ 2 = <span class="math-display">680 m</span>',
+                    en: 'Total distance = v × t = 340 × 4 = 1360 m<br>Cliff distance = 1360 ÷ 2 = <span class="math-display">680 m</span>'
+                }
+            },
+            {
+                id: 'S2',
+                title: { ar: 'مثال: مدى السمع البشري', en: 'Example: Human Hearing Range' },
+                problem: { 
+                    ar: 'ما مدى السمع البشري؟ وما هي الموجات فوق الصوتية؟',
+                    en: 'What is the human hearing range? What is ultrasound?'
+                },
+                solution: {
+                    ar: 'مدى السمع البشري: <span class="math-display">20 Hz - 20,000 Hz</span><br>الموجات فوق الصوتية: تردد أعلى من <span class="math-display">20,000 Hz</span>',
+                    en: 'Human hearing range: <span class="math-display">20 Hz - 20,000 Hz</span><br>Ultrasound: frequency above <span class="math-display">20,000 Hz</span>'
+                }
+            },
+            {
+                id: 'S3',
+                title: { ar: 'مثال: سرعة الصوت في الماء', en: 'Example: Speed of Sound in Water' },
+                problem: { 
+                    ar: 'دلفين يرسل موجة صوتية ويعود الصدى بعد <span class="math-display">0.010 s</span> من سمكة على بعد <span class="math-display">7.5 m</span>. ما سرعة الصوت في الماء؟',
+                    en: 'A dolphin sends a sound wave and echo returns after <span class="math-display">0.010 s</span> from a fish <span class="math-display">7.5 m</span> away. Speed of sound in water?'
+                },
+                solution: {
+                    ar: 'المسافة الكلية = 7.5 × 2 = 15 m<br>السرعة = المسافة ÷ الزمن = 15 ÷ 0.010 = <span class="math-display">1500 m/s</span>',
+                    en: 'Total distance = 7.5 × 2 = 15 m<br>Speed = distance ÷ time = 15 ÷ 0.010 = <span class="math-display">1500 m/s</span>'
+                }
+            },
+            {
+                id: 'S4',
+                title: { ar: 'مثال: الطول الموجي للأشعة السينية', en: 'Example: X-ray Wavelength' },
+                problem: { 
+                    ar: 'جهاز أشعة سينية ينتج موجات بتردد <span class="math-display">1.25 × 10¹⁸ Hz</span>. احسب الزمن الدوري والطول الموجي. (سرعة الأشعة = <span class="math-display">3.00 × 10⁸ m/s</span>)',
+                    en: 'An x-ray machine produces waves with frequency <span class="math-display">1.25 × 10¹⁸ Hz</span>. Calculate time period and wavelength. (Speed = <span class="math-display">3.00 × 10 m/s</span>)'
+                },
+                solution: {
+                    ar: 'T = 1/f = 1/(1.25×10¹⁸) = <span class="math-display">8.0 × 10⁻¹⁹ s</span><br>λ = v/f = 3.00×10⁸ / 1.25×10¹⁸ = <span class="math-display">2.4 × 10⁻¹⁰ m</span>',
+                    en: 'T = 1/f = 1/(1.25×10¹⁸) = <span class="math-display">8.0 × 10⁻¹⁹ s</span><br>λ = v/f = 3.00×10⁸ / 1.25×10¹⁸ = <span class="math-display">2.4 × 10⁻¹ m</span>'
+                }
+            }
+        ]
+    }
+};
+
+// ==================== Display Functions ====================
+function showTopic(topicKey) {
+    currentTopic = topicKey;
+    const topic = physicsProblems[topicKey];
+    const contentArea = document.getElementById('content-area');
+    
+    // Update active card
+    document.querySelectorAll('.topic-card').forEach(card => card.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    let html = `<div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-teal-200 mb-6">
+        <h2 class="text-2xl font-bold text-teal-700 mb-4 text-center">${topic.title[currentLang]}</h2>
+        <p class="text-sm text-gray-600 text-center">${currentLang === 'ar' ? 'اضغط على "إظهار الحل" لرؤية الحل التفصيلي' : 'Click "Show Solution" to see detailed solution'}</p>
+    </div>`;
+    
+    topic.problems.forEach((prob, idx) => {
+        html += `
+        <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-teal-100 mb-4">
+            <div class="flex items-center justify-between mb-3">
+                <span class="bg-teal-100 text-teal-700 px-3 py-1 rounded-full text-sm font-bold">${prob.id}</span>
+                <button onclick="toggleSolution('${prob.id}')" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition cursor-pointer" id="btn-${prob.id}" data-ar="👁️ إظهار الحل" data-en="👁️ Show Solution">
+                    👁️ ${currentLang === 'ar' ? 'إظهار الحل' : 'Show Solution'}
+                </button>
+            </div>
+            <h3 class="font-bold text-lg text-gray-800 mb-3">${prob.title[currentLang]}</h3>
+            <div class="bg-gray-50 p-4 rounded-lg mb-3 border-r-4 border-teal-400">
+                <strong class="text-teal-700">${currentLang === 'ar' ? '📋 المسألة:' : '📋 Problem:'}</strong>
+                <p class="mt-2 text-gray-800">${prob.problem[currentLang]}</p>
+            </div>
+            <div id="solution-${prob.id}" class="hidden">
+                <div class="solution-box">
+                    <strong class="text-blue-700">${currentLang === 'ar' ? '✅ الحل:' : '✅ Solution:'}</strong>
+                    <p class="mt-2 text-gray-800">${prob.solution[currentLang]}</p>
+                </div>
+            </div>
+        </div>`;
+    });
+    
+    contentArea.innerHTML = html;
+    contentArea.scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleSolution(problemId) {
+    const solutionDiv = document.getElementById(`solution-${problemId}`);
+    const btn = document.getElementById(`btn-${problemId}`);
+    
+    if (solutionDiv.classList.contains('hidden')) {
+        solutionDiv.classList.remove('hidden');
+        btn.innerHTML = currentLang === 'ar' ? '🙈 إخفاء الحل' : '🙈 Hide Solution';
+    } else {
+        solutionDiv.classList.add('hidden');
+        btn.innerHTML = currentLang === 'ar' ? '👁️ إظهار الحل' : '👁️ Show Solution';
+    }
+}
+
+function setLanguage(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.body.classList.toggle('en-mode', lang === 'en');
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        el.innerHTML = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+    });
+    
+    // Re-render current topic if any
+    if (currentTopic) {
+        const activeCard = document.querySelector('.topic-card.active');
+        if (activeCard) {
+            const topic = physicsProblems[currentTopic];
+            // Update title
+            const titleEl = document.querySelector('h2.text-2xl');
+            if (titleEl) titleEl.textContent = topic.title[currentLang];
+            
+            // Update all problems
+            const problems = topic.problems;
+            problems.forEach((prob, idx) => {
+                const cards = document.querySelectorAll('.bg-white.p-6.rounded-2xl.shadow-lg.border-2.border-teal-100.mb-4');
+                if (cards[idx]) {
+                    const titleEl = cards[idx].querySelector('h3');
+                    if (titleEl) titleEl.textContent = prob.title[currentLang];
+                    
+                    const problemEl = cards[idx].querySelector('.bg-gray-50 p');
+                    if (problemEl) problemEl.innerHTML = prob.problem[currentLang];
+                    
+                    const solutionEl = cards[idx].querySelector('.solution-box p');
+                    if (solutionEl) solutionEl.innerHTML = prob.solution[currentLang];
+                    
+                    const btn = cards[idx].querySelector('button');
+                    if (btn && !solutionEl.parentElement.classList.contains('hidden')) {
+                        btn.innerHTML = currentLang === 'ar' ? '🙈 إخفاء الحل' : '🙈 Hide Solution';
+                    } else if (btn) {
+                        btn.innerHTML = currentLang === 'ar' ? '️ إظهار الحل' : '👁️ Show Solution';
+                    }
+                }
+            });
+        }
+    }
+}
+
+// ==================== Initialization ====================
+window.addEventListener('DOMContentLoaded', () => {
+    // Load saved state
+    try {
+        const saved = localStorage.getItem('physics_problems_state');
+        if (saved) {
+            const state = JSON.parse(saved);
+            if (state.studentName) document.getElementById('studentName').value = state.studentName;
+            if (state.studentClass) document.getElementById('studentClass').value = state.studentClass;
+            if (state.examDate) document.getElementById('examDate').value = state.examDate;
+        }
+    } catch (e) {}
+    
+    // Save on input
+    ['studentName', 'studentClass', 'examDate'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('input', () => {
+                try {
+                    localStorage.setItem('physics_problems_state', JSON.stringify({
+                        studentName: document.getElementById('studentName').value,
+                        studentClass: document.getElementById('studentClass').value,
+                        examDate: document.getElementById('examDate').value
+                    }));
+                } catch (e) {}
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>
